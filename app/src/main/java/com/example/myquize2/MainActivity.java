@@ -2,6 +2,7 @@ package com.example.myquize2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
 //    private Quize quize;
     private List<Quize> quizeList = new ArrayList<>();
     private int quizeIndex = 0;
-    private static  final int nextId = R.id.next;
+    private static final int nextId = R.id.next;
     private Button nextButton;
     private String defaultResultMessage;
+    private int correctAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (correct) {
                     resultText.setText("正解です");
+                    correctAnswer++;
                 } else {
                     resultText.setText("間違いです");
                 }
@@ -76,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (quizeIndex < quizeList.size()-1) {
                     quizeIndex++;
+                } else {
+                    Intent intent = new Intent(getApplication(), ResultActivity.class);
+                    intent.putExtra("correctAnswer", correctAnswer);
+                    intent.putExtra("quizeSize", quizeList.size());
+                    startActivity(intent);
                 }
                 setQuize();
                 finalAnswerButton.setVisibility(View.VISIBLE);
